@@ -1,20 +1,104 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container bottomForm">
-    <h2 class="text-center">Fiche Client</h2>
-    <div class="row">
-        <div class="col-sm-3"></div>
-        <form method="POST" class="text-left col-sm-6">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.nom.label }} {{ form.nom(class="form-control") }}
+<style>
+    /* On réutilise les codes couleurs de la page de connexion */
+    .fiche-container {
+        padding: 40px 0;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-card {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid #eee;
+    }
+
+    .form-card h2 {
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    /* Petite barre sous le titre pour le style */
+    .form-card h2::after {
+        content: '';
+        width: 50px;
+        height: 4px;
+        background: #667eea;
+        display: block;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+
+    .btn-submit {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        color: #fff;
+    }
+</style>
+
+<div class="container fiche-container">
+    <div class="row w-100">
+        <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2">
+            <div class="form-card">
+                <h2 class="text-center">Fiche Client</h2>
+                
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group mb-4">
+                        {{ form.nom.label }}
+                        {{ form.nom(class="form-control", placeholder="Ex: Dupont") }}
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        {{ form.prenom.label }}
+                        {{ form.prenom(class="form-control", placeholder="Ex: Jean") }}
+                    </div>
+                    
+                    {{ form.submit(class="btn-submit") }}
+                </form>
             </div>
-            <div class="form-group">
-                {{ form.prenom.label }} {{ form.prenom(class="form-control") }}
-            </div>
-            {{ form.submit(class="btn btn-primary") }}
-        </form>
-        <div class="col-sm-3"></div>
+        </div>
     </div>
 </div>
 {% endblock content %}
