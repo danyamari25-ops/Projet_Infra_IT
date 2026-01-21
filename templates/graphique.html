@@ -1,133 +1,85 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
+<!DOCTYPE>
+
+<html>
+
+  <head>
+
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Météo - Métriques Paris</title>
+
+    <title>Metrique</title>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
 
-        .dashboard-card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            padding: 30px;
-            width: 100%;
-            max-width: 900px;
-        }
+  </head>  
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
 
-        .header h2 {
-            color: #333;
-            margin: 0;
-            font-size: 1.8rem;
-        }
 
-        .header p {
-            color: #777;
-            margin-top: 5px;
-        }
+  <body>
 
-        #chart_div {
-            width: 100%;
-            height: 400px; /* Hauteur fixe pour le graphique */
-        }
-
-        /* Style pour le chargement */
-        #loader {
-            text-align: center;
-            padding: 50px;
-            color: #667eea;
-            font-weight: bold;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="dashboard-card">
-        <div class="header">
-            <h2>🌡️ Prévisions à Paris</h2>
-            <p>Évolution des températures pour les 16 prochains jours</p>
-        </div>
-
-        <div id="chart_div">
-            <div id="loader">Chargement des données météo...</div>
-        </div>
-    </div>
+    <div id="chart_div"></div>
 
     <script>
-        // Charger l'API Google Charts
-        google.charts.load('current', { packages: ['corechart'] });
-        google.charts.setOnLoadCallback(initChart);
 
-        function initChart() {
-            fetch('/paris/')
-                .then(response => response.json())
-                .then(data => {
-                    drawChart(data);
-                })
-                .catch(err => {
-                    document.getElementById('loader').innerHTML = "Erreur lors de la récupération des données.";
-                    console.error(err);
-                });
-        }
+      google.charts.load('current', { packages: ['corechart'] });
 
-        function drawChart(data) {
-            var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn('string', 'Date');
-            dataTable.addColumn('number', 'Température (°C)');
+      google.charts.setOnLoadCallback(drawBackgroundColor);
 
-            data.results.forEach(entry => {
-                var date = new Date(entry.Jour * 1000);
-                // On affiche juste le jour et le mois (ex: 21/01)
-                var dateFormatted = date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-                dataTable.addRow([dateFormatted, entry.temp]);
-            });
+     function drawBackgroundColor() {
 
-            var options = {
-                curveType: 'function', // Lissage de la courbe
-                height: 400,
-                colors: ['#667eea'], // Couleur de la ligne assortie au thème
-                lineWidth: 4,
-                areaOpacity: 0.1,
-                legend: { position: 'bottom', textStyle: { color: '#555' } },
-                hAxis: {
-                    title: 'Jour',
-                    gridlines: { color: 'transparent' }
-                },
-                vAxis: {
-                    title: 'Degrés Celsius',
-                    gridlines: { color: '#f0f0f0' }
-                },
-                chartArea: { width: '85%', height: '70%' },
-                animation: {
-                    startup: true,
-                    duration: 1000,
-                    easing: 'out'
-                }
-            };
+    function drawChart(data) {
 
-            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-            chart.draw(dataTable, options);
-        }
+    // Convertir les données récupérées en un tableau utilisable par Google Charts
 
-        // Redessiner le graphique si on redimensionne la fenêtre
-        window.onresize = initChart;
+    var dataTable = new google.visualization.DataTable();
+
+    dataTable.addColumn('string', 'Date');
+
+    dataTable.addColumn('number', 'Valeur');
+
+    data.results.forEach(entry => {
+
+      var date = new Date(entry.Jour * 1000);
+
+      dataTable.addRow([date.toLocaleDateString(), entry.temp]);
+
+    });
+
+
+
+    // Configurer les options du graphique en ligne
+
+    var options = {
+
+      title: 'Évolution des températures de Paris pour les 16 prochains jours',
+
+      curveType: 'function',
+
+      legend: { position: 'bottom' }
+
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+    chart.draw(dataTable, options);
+
+  }
+
+  // Récupération de données depuis notre API /paris/
+
+  fetch('/paris/')
+
+    .then(response => response.json())
+
+    .then(data => {
+
+      drawChart(data);
+
+    })
+
+}
+
     </script>
-</body>
+
+  </body>
+
 </html>
