@@ -1,3 +1,112 @@
-<!doctype html>
-<title>Flask Server</title>
-<h1> Hello from Flask Server !</h1>
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    /* Style spécifique pour l'accueil */
+    .hero-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 20px;
+        margin-top: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .welcome-title {
+        font-size: 2.5rem;
+        color: #333;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .welcome-title span {
+        color: #667eea; /* Couleur bleue comme ta page de login */
+    }
+
+    .status-badge {
+        display: inline-block;
+        background: #e6fffa;
+        color: #38a169;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    /* Grille de navigation pour tes autres pages */
+    .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 40px;
+    }
+
+    .menu-card {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 15px;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-10px);
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .icon {
+        font-size: 2.5rem;
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .menu-card h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .menu-card p {
+        font-size: 0.85rem;
+        color: #777;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="hero-section">
+        <div class="status-badge">● Administrateur Connecté</div>
+        <h1 class="welcome-title">Bienvenue dans la <span>Bibliothèque</span></h1>
+        <p>Que souhaitez-vous faire aujourd'hui ?</p>
+
+        <div class="menu-grid">
+            <a href="{{ url_for('formulaire_livre') }}" class="menu-card">
+                <span class="icon">📖</span>
+                <h3>Livres</h3>
+                <p>Ajouter ou modifier des ouvrages</p>
+            </a>
+
+            <a href="{{ url_for('ajouter_client') }}" class="menu-card">
+                <span class="icon">👤</span>
+                <h3>Clients</h3>
+                <p>Gérer les fiches et inscriptions</p>
+            </a>
+
+            <a href="{{ url_for('read_data') }}" class="menu-card">
+                <span class="icon">🔍</span>
+                <h3>Inventaire</h3>
+                <p>Consulter les données enregistrées</p>
+            </a>
+
+            <a href="{{ url_for('graphique') }}" class="menu-card">
+                <span class="icon">📊</span>
+                <h3>Statistiques</h3>
+                <p>Visualiser les métriques</p>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
