@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .welcome-container {
+        padding: 60px 0;
+        text-align: center;
+    }
+
+    .welcome-card {
+        background: white;
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        display: inline-block;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .welcome-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    h1 {
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #777;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    .library-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .action-card {
+        padding: 20px;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #555;
+        transition: all 0.3s ease;
+    }
+
+    .action-card:hover {
+        border-color: #667eea;
+        background: #f8faff;
+        transform: translateY(-5px);
+    }
+
+    .action-card i {
+        display: block;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #667eea;
+    }
+</style>
+
+<div class="container welcome-container">
+    <div class="welcome-card">
+        <span class="welcome-icon">📚</span>
+        <h1>Bienvenue, {{ current_user.username }} !</h1>
+        <p class="subtitle">Vous êtes maintenant connecté à la bibliothèque.</p>
+
+        <div class="library-grid">
+            <a href="{{ url_for('fiche_client') }}" class="action-card">
+                <span>👤</span>
+                <strong>Fiche Client</strong>
+                <p style="font-size: 0.8rem; margin: 5px 0 0;">Gérer mes infos</p>
+            </a>
+            <a href="{{ url_for('metrique') }}" class="action-card">
+                <span>📈</span>
+                <strong>Statistiques</strong>
+                <p style="font-size: 0.8rem; margin: 5px 0 0;">Voir la météo</p>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
