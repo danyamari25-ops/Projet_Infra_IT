@@ -2,35 +2,57 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter une tâche</title>
+    <title>Gestionnaire de Tâches</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
-        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;}
-        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: #218838; }
-        .retour { display: block; text-align: center; margin-top: 15px; color: #666; }
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .btn-add { display: block; width: 200px; margin: 20px auto; padding: 10px; background: #28a745; color: white; text-align: center; text-decoration: none; border-radius: 5px; }
+        
+        .tache-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; background: #fff; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Style spécial pour les tâches terminées */
+        .terminee { background-color: #e9ecef; color: #6c757d; }
+        .terminee h3 { text-decoration: line-through; }
+
+        .actions { display: flex; gap: 10px; }
+        button { cursor: pointer; padding: 5px 10px; border: none; border-radius: 3px; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-check { background: #007bff; color: white; }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2>Nouvelle Tâche</h2>
-    
-    <form method="post">
-        <label for="titre">Titre de la tâche *</label>
-        <input type="text" name="titre" placeholder="Ex: Faire les courses" required>
+<div class="container">
+    <h1>Mes Tâches</h1>
 
-        <label for="description">Description</label>
-        <textarea name="description" rows="4" placeholder="Détails de la tâche..."></textarea>
+    <a href="{{ url_for('ajouter') }}" class="btn-add">+ Nouvelle Tâche</a>
 
-        <label for="date_echeance">Date d'échéance</label>
-        <input type="date" name="date_echeance">
+    <div class="liste-taches">
+        {% for tache in taches %}
+            <div class="tache-card {% if tache['est_terminee'] %}terminee{% endif %}">
+                <div class="contenu">
+                    <h3>{{ tache['titre'] }}</h3>
+                    <p>{{ tache['description'] }}</p>
+                    <small>📅 Échéance : {{ tache['date_echeance'] }}</small>
+                </div>
 
-        <button type="submit">Enregistrer la tâche</button>
-    </form>
+                <div class="actions">
+                    {% if not tache['est_terminee'] %}
+                    <form action="{{ url_for('terminer', id=tache['id']) }}" method="post">
+                        <button type="submit" class="btn-check">✓ Terminer</button>
+                    </form>
+                    {% endif %}
 
-    <a href="{{ url_for('index') }}" class="retour">← Retour à la liste</a>
+                    <form action="{{ url_for('supprimer', id=tache['id']) }}" method="post">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr ?')">🗑 Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p style="text-align:center">Aucune tâche pour le moment.</p>
+        {% endfor %}
+    </div>
 </div>
 
 </body>
